@@ -1,0 +1,27 @@
+#!/usr/bin/expect -f
+
+set verbose_flag 1
+
+set username "****"
+set password "****"
+set host "****"
+
+set files {world.zip}
+file delete [glob $files]
+
+#log_user 0
+set timeout -1
+
+send_user "starting ncftp ..."
+spawn ncftp -u $username -p $password $host
+expect "ncftp*>"
+
+foreach f $files {
+  send_user "getting $f ..."
+  send "get $f\r"
+  expect "ncftp*>"
+
+}
+
+send_user "saying goodbye ..."
+send "bye\r"
